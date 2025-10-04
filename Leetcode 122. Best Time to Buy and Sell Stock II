@@ -1,0 +1,33 @@
+class Solution {
+    private:
+    int solve(vector<int>& prices , vector<vector<int> >& dp , int idx , int buy){
+           
+           if(prices.size() == idx){
+            return 0;
+           }
+           
+           if(dp[idx][buy] != -1){
+            return dp[idx][buy];
+           }
+           int maxi = 0;
+
+           if(buy){
+
+               maxi = max(-prices[idx] + solve( prices, dp , idx + 1 , 0) , 0 + solve(prices , dp , idx + 1 , 1));
+           }else{
+
+               maxi = max(prices[idx] + solve(prices , dp , idx + 1 , 1) , 0 + solve( prices , dp , idx + 1 , 0));
+           }
+
+           return dp[idx][buy] = maxi;
+
+    }
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        int n = prices.size();
+        vector<vector<int>> dp(n , vector<int>(3 , -1));
+
+        return solve(prices , dp , 0 , 1);
+    }
+};
